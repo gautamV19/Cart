@@ -12,12 +12,18 @@ class CartItem extends React.Component {
         // this.increaseQuantity= this.increaseQuantity.bind(this);
     }
     increaseQuantity = () => {
+        // console.log(this, this.state);
+
         // this.state.qty += 1;
         // this above line won't work because for showing the change page has to be 
         // refreshed and if we refresh the page qty will go to 1
-        console.log(this, this.state);
         // we have to use setState function here 2 ways are there to use that
+
         //** way 1 */
+        // this.setState({
+        //     qty: this.state.qty + 1
+        // }, () => { });
+        // if we want to perform something just after the state change.
         // this.setState({
         //     qty: this.state.qty + 1
         // });
@@ -26,11 +32,20 @@ class CartItem extends React.Component {
         // this.setState((prevState) => {
         // return { qty: prevState.qty + 1 }
         // })
+
         this.setState(function (prevState) {
             return { qty: prevState.qty + 1 }
         })
     }
 
+    decreaseQuantity = () => {
+        this.setState((prevState) => {
+            if (prevState.qty === 0) {
+                return;
+            }
+            return { qty: prevState.qty - 1 }
+        })
+    }
     render() {
         // const qty1 = this.state.qty; this is one way to do
         //** Objective structuring */
@@ -68,7 +83,7 @@ class CartItem extends React.Component {
                             alt='decrease'
                             className='action-icons'
                             src='https://as1.ftcdn.net/v2/jpg/03/73/49/86/1000_F_373498649_nBxauQ0ipBSVrVcMpWWVmTpXu3BLvRyY.jpg'
-                            onClick
+                            onClick={this.decreaseQuantity}
                         />
                         <img
                             alt='delete'
