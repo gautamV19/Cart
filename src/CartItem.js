@@ -1,16 +1,7 @@
 import React from 'react';
 
 class CartItem extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            price: 999,
-            title: 'Mobile Phone',
-            qty: 1,
-            img: ''
-        }
-        // this.increaseQuantity= this.increaseQuantity.bind(this);
-    }
+    
     increaseQuantity = () => {
         // console.log(this, this.state);
 
@@ -47,10 +38,12 @@ class CartItem extends React.Component {
         })
     }
     render() {
+        console.log('this.props', this.props);
+        const { price, title, qty } = this.props.product;
         // const qty1 = this.state.qty; this is one way to do
         //** Objective structuring */
-        const { price, title, qty } = this.state;
-        console.log(price, title, qty);
+        // const { price, title, qty } = this.state;
+        // console.log(price, title, qty);
         // const { price, title, qty2 } = this.state;
         //** qty2 is undefined  =>  Always give exactly same names of property. All of the below are undefined*/
         // const { a, b, c } = this.state;
@@ -66,7 +59,7 @@ class CartItem extends React.Component {
                     <img style={styles.image} />
                 </div>
                 <div className='right-block'>
-                    <div style={{ fontFamily: 'cursive', fontSize: 26 }}>{this.state.title}</div>
+                    <div style={{ fontFamily: 'cursive', fontSize: 26 }}>{title}</div>
                     <div style={{ color: '#777' }}>Rs {price}</div>
                     <div style={{ color: '#777' }}>Qty: {qty}</div>
                     <div className="cart-item-actions">
