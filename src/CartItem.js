@@ -1,16 +1,36 @@
 import React from 'react';
 
 class CartItem extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            price: 999,
+            title: 'Mobile Phone',
+            qty: 1
+        }
+    }
     render() {
+        const qty1 = this.state.qty;
+        //** Objective structuring */
+        const { price, title, qty2 } = this.state;
+        console.log(price, title, qty2);
+        //** qty2 is undefined  =>  Always give exactly same names of property. All of the below are undefined*/
+        const { a, b, c } = this.state;
+        console.log(a, b, c);
+        const { d, e } = this.state;
+        console.log(d, e);
+        const { f } = this.state;
+        console.log(f);
+
         return (
             <div className="cart-item">
                 <div className='left-block'>
                     <img style={styles.image} />
                 </div>
                 <div className='right-block'>
-                    <div style={{ fontFamily: 'cursive', fontSize: 26 }}>Phone</div>
-                    <div style={{ color: '#777' }}>Rs 999</div>
-                    <div style={{ color: '#777' }}>Qty: 1</div>
+                    <div style={{ fontFamily: 'cursive', fontSize: 26 }}>{this.state.title}</div>
+                    <div style={{ color: '#777' }}>Rs {price}</div>
+                    <div style={{ color: '#777' }}>Qty: {qty1}</div>
                     <div className="cart-item-actions">
                         {/* Buttons */}
                         <img alt='increase' className='action-icons' src='https://as2.ftcdn.net/v2/jpg/01/07/62/07/1000_F_107620769_UwNVSoXnKS4VNcOKoZjPohlEPn83oE38.jpg' />
