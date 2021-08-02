@@ -38,6 +38,67 @@ class Cart extends React.Component {
         }
         // this.increaseQuantity= this.increaseQuantity.bind(this);
     }
+
+    handleIncreaseQuantity = (product) => {
+        // console.log('hey increase quantity', product);
+        const { products } = this.state;
+        const index = products.indexOf(product);
+        products[index].qty += 1;
+
+        this.setState(
+            {
+                // products: products // this is working 
+                products // this is shorthand to use when both are same
+            }
+        )
+
+        // console.log('hey increase quantity', product.qty);
+        // // console.log('hey increase quantity', qty);
+        // this.setState(() => {
+        //     product.qty = product.qty + 1;
+        //     this.qty = product.qty;
+        // })
+    }
+    //**My try to impliment the function */
+    // increaseQuantity = (product) => {
+    //     console.log('From cart function  ', product);
+    //     // console.log(product.qty);
+    //     // product.qty++;
+    //     // Above was wrong we get product in another way...
+    //     console.log(product.props.product.qty, 'before');
+    //     this.setState(
+    //         () => {
+    //             product.props.product.qty = product.props.product.qty + 1;
+    //         }
+    //     )
+    //     console.log(product.props.product.qty, 'after');
+    // }
+
+
+    //** Decrease Quantity */
+    decreaseQuantity = (product) => {
+        const { products } = this.state;
+        var index = products.indexOf(product);
+
+        if (products[index].qty > 0) {
+            products[index].qty -= 1;
+            this.setState(
+                { products }
+            )
+        }
+    }
+
+    handleDelete = (id) => {
+        const { products } = this.state;
+        const items = products.filter((item) => item.id !== id);
+        // above filter function will return an array of filtered elements
+        this.setState(
+            {
+                products: items
+            }
+        )
+    }
+
     render() {
         const { products } = this.state;
         return (
@@ -52,6 +113,9 @@ class Cart extends React.Component {
                             <CartItem
                                 product={pdt}
                                 key={pdt.id}
+                                increaseQuantity={this.handleIncreaseQuantity}
+                                decreaseQuantity={this.decreaseQuantity}
+                                deleteQuantity={this.handleDelete}
                             />
                         )
                     })

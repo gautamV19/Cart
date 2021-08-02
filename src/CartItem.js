@@ -1,45 +1,48 @@
 import React from 'react';
 
 class CartItem extends React.Component {
-    
-    increaseQuantity = () => {
-        // console.log(this, this.state);
 
-        // this.state.qty += 1;
-        // this above line won't work because for showing the change page has to be 
-        // refreshed and if we refresh the page qty will go to 1
-        // we have to use setState function here 2 ways are there to use that
+    // increaseQuantity = () => {
+    //     // console.log(this, this.state);
 
-        //** way 1 */
-        // this.setState({
-        //     qty: this.state.qty + 1
-        // }, () => { });
-        // if we want to perform something just after the state change.
-        // this.setState({
-        //     qty: this.state.qty + 1
-        // });
-        //** way 2 */
-        //here both normal and arrow function works
-        // this.setState((prevState) => {
-        // return { qty: prevState.qty + 1 }
-        // })
+    //     // this.state.qty += 1;
+    //     // this above line won't work because for showing the change page has to be 
+    //     // refreshed and if we refresh the page qty will go to 1
+    //     // we have to use setState function here 2 ways are there to use that
 
-        this.setState(function (prevState) {
-            return { qty: prevState.qty + 1 }
-        })
-    }
+    //     //** way 1 */
+    //     // this.setState({
+    //     //     qty: this.state.qty + 1
+    //     // }, () => { });
+    //     // if we want to perform something just after the state change.
+    //     // this.setState({
+    //     //     qty: this.state.qty + 1
+    //     // });
+    //     //** way 2 */
+    //     //here both normal and arrow function works
+    //     // this.setState((prevState) => {
+    //     // return { qty: prevState.qty + 1 }
+    //     // })
 
-    decreaseQuantity = () => {
-        this.setState((prevState) => {
-            if (prevState.qty === 0) {
-                return;
-            }
-            return { qty: prevState.qty - 1 }
-        })
-    }
+    //     this.setState(function (prevState) {
+    //         return { qty: prevState.qty + 1 }
+    //     })
+    // }
+
+    // decreaseQuantity = () => {
+    //     this.setState((prevState) => {
+    //         if (prevState.qty === 0) {
+    //             return;
+    //         }
+    //         return { qty: prevState.qty - 1 }
+    //     })
+    // }
     render() {
         console.log('this.props', this.props);
         const { price, title, qty } = this.props.product;
+        const { product, deleteQuantity } = this.props;
+        // const { increaseQuantity } = this.props;
+        // console.log( price, title, qty, increaseQuantity );
         // const qty1 = this.state.qty; this is one way to do
         //** Objective structuring */
         // const { price, title, qty } = this.state;
@@ -70,19 +73,26 @@ class CartItem extends React.Component {
                             src='https://as2.ftcdn.net/v2/jpg/01/07/62/07/1000_F_107620769_UwNVSoXnKS4VNcOKoZjPohlEPn83oE38.jpg'
                             // onClick={this.increaseQuantity} this is wrong (with normal function)
                             // onClick={this.increaseQuantity.bind(this)} this is right
-                            onClick={this.increaseQuantity} // this will work with arrow function
+                            // onClick={this.increaseQuantity} // this will work with arrow function
+                            // above things was for single state now we moved to multiple states...
+
+                            onClick={() => this.props.increaseQuantity(this.props.product)}
+                        //** My try */
+                        // onClick={() => {
+                        //     increaseQuantity(this);
+                        // }}
                         />
                         <img
                             alt='decrease'
                             className='action-icons'
                             src='https://as1.ftcdn.net/v2/jpg/03/73/49/86/1000_F_373498649_nBxauQ0ipBSVrVcMpWWVmTpXu3BLvRyY.jpg'
-                            onClick={this.decreaseQuantity}
+                            onClick={() => this.props.decreaseQuantity(this.props.product)}
                         />
                         <img
                             alt='delete'
                             className='action-icons'
                             src='https://as2.ftcdn.net/v2/jpg/01/90/89/15/1000_F_190891550_N7uKp2aHE3mOc20dmtDytj7atgvbhdOu.jpg'
-                            onClick
+                            onClick={() => deleteQuantity(product.id)}
                         />
                     </div>
                 </div>
