@@ -14,6 +14,7 @@ class App extends React.Component {
       products: [],
       loading: true
     }
+    this.db = firebase.default.firestore();
     // this.increaseQuantity= this.increaseQuantity.bind(this);
   }
 
@@ -23,11 +24,9 @@ class App extends React.Component {
     // console.log(firebase.default);
     // console.log('FIRESTORE');
     // console.log(firebase.default.firestore().collection('products'));
-    firebase.default
-      .firestore()
+    this.db
       .collection('Products')
-      .get()
-      .then((snapshot) => {
+      .onSnapshot((snapshot) => {     //** this onSnapshot is having a event listner inside it */
         // console.log(snapshot);
         // console.log(snapshot.docs);
 
@@ -59,17 +58,17 @@ class App extends React.Component {
   }
 
   handleIncreaseQuantity = (product) => {
-    // console.log('hey increase quantity', product);
+    console.log('hey increase quantity', product);
     const { products } = this.state;
     const index = products.indexOf(product);
-    products[index].qty += 1;
+    // products[index].qty += 1;
 
-    this.setState(
-      {
-        // products: products // this is working 
-        products // this is shorthand to use when both are same
-      }
-    )
+    // this.setState(
+    //   {
+    //     // products: products // this is working 
+    //     products // this is shorthand to use when both are same
+    //   }
+    // )
 
     // console.log('hey increase quantity', product.qty);
     // // console.log('hey increase quantity', qty);
@@ -77,6 +76,14 @@ class App extends React.Component {
     //     product.qty = product.qty + 1;
     //     this.qty = product.qty;
     // })
+
+    //** with firebase */
+
+    const docRef = this.db
+      .collection('Products')
+      .doc(products[index].id);
+
+    docRef.update({ qty: products[index].qty + 1 }).then(() => console.log('Increased')).catch((error) => console.log('Error :', error))
   }
   //**My try to impliment the function */
   // increaseQuantity = (product) => {
@@ -100,22 +107,34 @@ class App extends React.Component {
     var index = products.indexOf(product);
 
     if (products[index].qty > 0) {
-      products[index].qty -= 1;
-      this.setState(
-        { products }
-      )
+      const docRef = this.db
+        .collection('Products')
+        .doc(products[index].id);
+
+      docRef
+        .update({ qty: products[index].qty - 1 })
+        .then(() => console.log('Decreased'))
+        .catch((error) => console.log('Error :', error))
     }
   }
 
   handleDelete = (id) => {
-    const { products } = this.state;
-    const items = products.filter((item) => item.id !== id);
+    // const { products } = this.state;
+    // const index = products.indexOf()
     // above filter function will return an array of filtered elements
-    this.setState(
-      {
-        products: items
-      }
-    )
+    // this.setState(
+    //   {
+    //     products: items
+    //   }
+    // )
+
+    this.db
+      .collection('Products')
+      .doc(id)
+      .delete()
+      .then(() => console.log('Deleted'))
+      .catch((error) => console.log('Error :', error))
+
   }
 
   countQty = () => {
@@ -136,6 +155,26 @@ class App extends React.Component {
     return count;
   }
 
+  addProduct = () => {
+    this.db
+      .collection('Products')
+      .add({
+        price: 99990,
+        title: 'Laptop',
+        qty: 13,
+        img: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1007&q=80'
+      })
+      .then((docref) => {
+        console.log('Item added', docref);
+        //** No need it's implicit due to add */
+        // this.setState(() => {
+        // this.state.products.push(docref);
+        // })
+      })
+      .catch((error) => {
+        console.log('Error :', error);
+      })
+  }
 
   render() {
     const { products, loading } = this.state;
@@ -145,6 +184,17 @@ class App extends React.Component {
           count={this.countQty()}
           total={this.totalP()}
         />
+        <button
+          onClick={this.addProduct}
+
+          style={{
+            padding: 13,
+            fontSize: 26,
+            background: 'yellow',
+            margin: 13
+          }}>
+          Add Products
+        </button>
         <Cart
           products={products}
           increaseQuantity={this.handleIncreaseQuantity}
