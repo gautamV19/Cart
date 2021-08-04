@@ -39,7 +39,12 @@ const CartItem = (props) => {
     // }
     console.log('this.props', props);
     const { price, title, qty } = props.product;
-    const { product, deleteQuantity } = props;
+    const {
+        product,
+        deleteQuantity,
+        decreaseQuantity,
+        increaseQuantity
+    } = props;
     // const { increaseQuantity } = this.props;
     // console.log( price, title, qty, increaseQuantity );
     // const qty1 = this.state.qty; this is one way to do
@@ -58,7 +63,7 @@ const CartItem = (props) => {
     return (
         <div className="cart-item">
             <div className='left-block'>
-                <img style={styles.image} />
+                <img style={styles.image} src={product.img} />
             </div>
             <div className='right-block'>
                 <div style={{ fontFamily: 'cursive', fontSize: 26 }}>{title}</div>
@@ -75,7 +80,7 @@ const CartItem = (props) => {
                         // onClick={this.increaseQuantity} // this will work with arrow function
                         // above things was for single state now we moved to multiple states...
 
-                        onClick={() => props.increaseQuantity(this.props.product)}
+                        onClick={() => increaseQuantity(props.product)}
                     //** My try */
                     // onClick={() => {
                     //     increaseQuantity(this);
@@ -85,7 +90,7 @@ const CartItem = (props) => {
                         alt='decrease'
                         className='action-icons'
                         src='https://as1.ftcdn.net/v2/jpg/03/73/49/86/1000_F_373498649_nBxauQ0ipBSVrVcMpWWVmTpXu3BLvRyY.jpg'
-                        onClick={() => props.decreaseQuantity(this.props.product)}
+                        onClick={() => decreaseQuantity(product)}
                     />
                     <img
                         alt='delete'
